@@ -1,8 +1,37 @@
+name: Update Preply ICS
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'  # Every 2 hours - change to '0 */4 * * *' for every 4 hours, etc.
+  workflow_dispatch:       # Lets you run it manually from GitHub UI
+
 jobs:
   update:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Run script
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests icalendar python-dateutil pytz
+
+      - name: Generate ICS file
         env:
-          PREPLY_SESSIONID: ${{ secrets.PREPLY_SESSIONID }}   # ← this line injects it
+          PREPLY_SESSIONID: ${{ secrets.PREPLY_SESSIONID }}
         run: python preply_export.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git add preply.ics
+          git commit -m "Auto-update Preply ICS [skip ci]" || echo "No changes to commit"
+          git push
