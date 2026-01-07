@@ -1,0 +1,9 @@
+{
+  "operationName": "TutorCalendarEvents",
+  "variables": {
+    "dateStart": "2026-01-01",
+    "dateEnd": "2026-02-01",
+    "tzname": "America/Nassau"
+  },
+  "query": "query TutorCalendarEvents($dateStart: Date!, $dateEnd: Date!, $tzname: String!) { currentUser { tutor { calendar(dateStart: $dateStart, dateEnd: $dateEnd, tzname: $tzname) { nodes { __typename ... on TimeoffTimeslot { id dateStart dateEnd title } ... on LessonTimeslot { dateStart dateEnd lesson { id status client { user { fullName } } } } ... on ReservedRecurrentLessonTimeslot { id dateStart dateEnd recurrentLessonConfig { client { user { fullName } } } } } } } } }"
+}
