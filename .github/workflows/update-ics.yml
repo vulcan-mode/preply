@@ -1,0 +1,8 @@
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run script
+        env:
+          PREPLY_SESSIONID: ${{ secrets.PREPLY_SESSIONID }}   # ← this line injects it
+        run: python preply_export.py
