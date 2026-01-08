@@ -4,6 +4,10 @@ on:
   schedule:
     - cron: '0 */2 * * *'  # Every 2 hours - change to '0 */4 * * *' for every 4 hours, etc.
   workflow_dispatch:       # Lets you run it manually from GitHub UI
+  
+permissions:
+  contents: write    # ← This line grants write access to repository contents (including pushing commits)
+
 
 jobs:
   update:
